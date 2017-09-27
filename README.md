@@ -1,7 +1,7 @@
 # GameDesign
 
 
-contriubutors: 
+contributors: 
 
 	- Nathan Gavin
 	- Max Van Duin
