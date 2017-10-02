@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+
+public static class Tags
+{
+    public const String JUMP_BLOCK = "BounceSurface";
+    public const String SPEED_BLOCK = "SpeedSurface";
+}
+

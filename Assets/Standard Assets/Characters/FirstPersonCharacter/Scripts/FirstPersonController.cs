@@ -13,6 +13,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
+        [SerializeField] [Range(0f, 10f)] private float m_SpeedRecoveryDropOff;
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
         [SerializeField] private float m_StickToGroundForce;
@@ -41,6 +42,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+        private float m_DefaultWalkSpeed;
+        private float m_DefaultRunSpeed;
+
+        private bool m_ImpulseAdded;
+        private Vector3 m_Impulse;
 
         // Use this for initialization
         private void Start()
@@ -55,6 +61,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+            m_DefaultRunSpeed = m_RunSpeed;
+            m_DefaultWalkSpeed = m_WalkSpeed;
         }
 
 
@@ -125,8 +133,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
             }
+
+            if (m_ImpulseAdded)
+            {
+                m_MoveDir.y = 0;
+                m_MoveDir += m_Impulse;
+                Debug.Log("MoveDir = " + m_MoveDir);
+                m_ImpulseAdded = false;
+                PlayJumpSound();
+                m_Jumping = true;
+            }
+            
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
+            MoveSpeedRecovery();
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
 
@@ -157,6 +177,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle + m_StepInterval;
 
             PlayFootStepAudio();
+        }
+
+        /// <summary>
+        /// Moves walking and running speeds back to their initial values
+        /// </summary>
+        private void MoveSpeedRecovery()
+        {
+            if (!m_CharacterController.isGrounded)
+            {
+                return;
+            }
+
+            m_WalkSpeed = Mathf.MoveTowards(m_WalkSpeed, m_DefaultWalkSpeed, m_SpeedRecoveryDropOff);
+            m_RunSpeed = Mathf.MoveTowards(m_RunSpeed, m_DefaultRunSpeed, m_SpeedRecoveryDropOff);
         }
 
 
@@ -254,6 +288,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return;
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+        }
+
+        /// <summary>
+        /// Adjust walking and running speed of player controller. 
+        /// Speed will automatically return to its default after some time.
+        /// </summary>
+        /// <param name="boostRatio">Ratio which to adjust. 0.5f represents half speed, 2.0f represents double speed.</param>
+        public void BoostSpeed(float boostRatio)
+        {
+            m_WalkSpeed = m_DefaultWalkSpeed * boostRatio;
+            m_RunSpeed = m_DefaultRunSpeed * boostRatio;
+        }
+
+        public void AddVelocity(Vector3 velocity)
+        {
+            m_ImpulseAdded = true;
+            m_Impulse = velocity;     
         }
     }
 }

@@ -139,6 +139,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
+
+            
+
             GroundCheck();
             Vector2 input = GetInput();
 
@@ -151,6 +154,29 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 desiredMove.x = desiredMove.x*movementSettings.CurrentTargetSpeed;
                 desiredMove.z = desiredMove.z*movementSettings.CurrentTargetSpeed;
                 desiredMove.y = desiredMove.y*movementSettings.CurrentTargetSpeed;
+
+                // Get the velocity
+                Vector3 horizontalMove = new Vector3(desiredMove.x, desiredMove.y, desiredMove.z);
+                // Don't use the vertical velocity
+                horizontalMove.y = 0;
+                // Calculate the approximate distance that will be traversed
+                float distance = horizontalMove.magnitude * Time.fixedDeltaTime;
+                // Normalize horizontalMove since it should be used to indicate direction
+                horizontalMove.Normalize();
+                RaycastHit hit;
+
+                // Check if the body's current velocity will result in a collision
+                if (m_RigidBody.SweepTest(horizontalMove, out hit, distance))
+                {
+                    Debug.Log("Stop");
+
+                    // If so, stop the movement
+                    //m_RigidBody.velocity = new Vector3(0, m_RigidBody.velocity.y, 0);
+                    desiredMove = new Vector3(0, m_RigidBody.velocity.y, 0);
+
+                    m_RigidBody.velocity = desiredMove;
+                }
+
                 if (m_RigidBody.velocity.sqrMagnitude <
                     (movementSettings.CurrentTargetSpeed*movementSettings.CurrentTargetSpeed))
                 {
