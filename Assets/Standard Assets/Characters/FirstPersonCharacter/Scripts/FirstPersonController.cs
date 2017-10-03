@@ -48,6 +48,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_ImpulseAdded;
         private Vector3 m_Impulse;
 
+		private bool onFrictionlessBlock;
+		private float x;
+		private float z;
+
+		public void setOnFrictionlessBlock () {
+			Debug.Log ("on ice");
+			onFrictionlessBlock = true;
+		}
+
         // Use this for initialization
         private void Start()
         {
@@ -63,6 +72,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			m_MouseLook.Init(transform , m_Camera.transform);
             m_DefaultRunSpeed = m_RunSpeed;
             m_DefaultWalkSpeed = m_WalkSpeed;
+			onFrictionlessBlock = false;
         }
 
 
@@ -113,9 +123,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
                                m_CharacterController.height/2f, ~0, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-            m_MoveDir.x = desiredMove.x*speed;
-            m_MoveDir.z = desiredMove.z*speed;
+			if (!onFrictionlessBlock) {
+				m_MoveDir.x = desiredMove.x * speed;
+				m_MoveDir.z = desiredMove.z * speed;
 
+				x = m_MoveDir.x != 0 ? m_MoveDir.x : x;
+				z = m_MoveDir.z != 0 ? m_MoveDir.z : z;
+			} else {
+				if (m_MoveDir.x == 0) {
+					m_MoveDir.x = x;
+				}
+				if (m_MoveDir.z == 0) {
+					m_MoveDir.z = z;
+				}
+			}
+			onFrictionlessBlock = false;
 
             if (m_CharacterController.isGrounded)
             {
@@ -134,7 +156,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
             }
 
-            if (m_ImpulseAdded)
+			if (m_ImpulseAdded)
             {
                 m_MoveDir.y = 0;
                 m_MoveDir += m_Impulse;
@@ -149,7 +171,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             MoveSpeedRecovery();
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
-
             m_MouseLook.UpdateCursorLock();
         }
 
