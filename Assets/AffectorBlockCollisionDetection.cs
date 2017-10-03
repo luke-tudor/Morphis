@@ -21,6 +21,11 @@ public class AffectorBlockCollisionDetection : MonoBehaviour {
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
 
+		if (hit.gameObject.transform.parent.tag == Tags.FRICTIONLESS_BLOCK) {
+			Debug.Log ("Frictionless");
+			_firstPersonController.setOnFrictionlessBlock();
+		} 
+
         if (hit.gameObject.transform.parent.tag == Tags.SPEED_BLOCK && SpeedAffects)
         {
             //var speedBlock = hit.gameObject.GetComponent<SpeedBlock>();
