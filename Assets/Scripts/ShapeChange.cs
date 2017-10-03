@@ -4,52 +4,56 @@ using System.Collections;
 public class ShapeChange : MonoBehaviour
 {
 
+    public bool Extrudable = true;
+
     public float GrowthRate = 1.0f;
 
     public float MinSize = 0.000001f;
     public float MaxSize = 10f;
 
     private Transform _transform;
-
-    private bool _grownThisUpdate = false;
-    private bool _shrunkThisUpdate = false;
+    private int _desiredScale;
 
     // Use this for initialization
     void Start()
     {
-        _transform = this.GetComponent<Transform>();
+        _transform = GetComponent<Transform>();
+        _desiredScale = (int)transform.localScale.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        _shrunkThisUpdate = false;
-        _grownThisUpdate = false;
+
+        Debug.Log("Desired = " + _desiredScale + "; Actual = " + transform.localScale.y);
+
+        if (Extrudable && Mathf.Approximately(_desiredScale, transform.localScale.y))
+        {
+            Debug.Log("Move to " + _desiredScale);
+
+            Vector3 newScale = _transform.localScale;
+            newScale.y = Mathf.MoveTowards(newScale.y, _desiredScale, Time.deltaTime * GrowthRate);
+            Debug.Log("newScale.y " + newScale.y);
+            newScale.y = Mathf.Clamp(newScale.y, MinSize, MaxSize);
+            Debug.Log("newScale.y " + newScale.y);
+            _transform.localScale = newScale;
+        }
     }
 
     public void Grow()
     {
-        if (_grownThisUpdate)
+        if (!Extrudable)
             return;
 
-        Vector3 newScale = _transform.localScale + (Vector3.up * (Time.deltaTime * GrowthRate));
-        newScale.y = Mathf.Min(newScale.y, MaxSize);
-
-        _transform.localScale = newScale;
-
-        _grownThisUpdate = true;
+        _desiredScale = Mathf.CeilToInt(transform.localScale.y + 0.001f);
+        
     }
 
     public void Shrink()
-    {
-        if (_shrunkThisUpdate)
+    {      
+        if (!Extrudable)
             return;
 
-        Vector3 newScale = _transform.localScale - (Vector3.up * (Time.deltaTime * GrowthRate));
-        newScale.y = Mathf.Max(newScale.y, MinSize);
-
-        _transform.localScale = newScale;
-
-        _shrunkThisUpdate = true;
+        _desiredScale = Mathf.FloorToInt(transform.localScale.y - 0.001f);
     }
 }
