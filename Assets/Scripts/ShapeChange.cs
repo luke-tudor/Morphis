@@ -24,18 +24,13 @@ public class ShapeChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        Debug.Log("Desired = " + _desiredScale + "; Actual = " + transform.localScale.y);
-
-        if (Extrudable && Mathf.Approximately(_desiredScale, transform.localScale.y))
+        if (Extrudable && !Mathf.Approximately(_desiredScale, transform.localScale.y))
         {
-            Debug.Log("Move to " + _desiredScale);
-
             Vector3 newScale = _transform.localScale;
+
             newScale.y = Mathf.MoveTowards(newScale.y, _desiredScale, Time.deltaTime * GrowthRate);
-            Debug.Log("newScale.y " + newScale.y);
             newScale.y = Mathf.Clamp(newScale.y, MinSize, MaxSize);
-            Debug.Log("newScale.y " + newScale.y);
+
             _transform.localScale = newScale;
         }
     }
@@ -46,7 +41,6 @@ public class ShapeChange : MonoBehaviour
             return;
 
         _desiredScale = Mathf.CeilToInt(transform.localScale.y + 0.001f);
-        
     }
 
     public void Shrink()

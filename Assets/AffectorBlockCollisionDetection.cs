@@ -22,23 +22,20 @@ public class AffectorBlockCollisionDetection : MonoBehaviour {
     {
 
 		if (hit.gameObject.transform.parent.tag == Tags.FRICTIONLESS_BLOCK) {
-			Debug.Log ("Frictionless");
 			_firstPersonController.setOnFrictionlessBlock();
 		} 
 
-        if (hit.gameObject.transform.parent.tag == Tags.SPEED_BLOCK && SpeedAffects)
+        if (hit.gameObject.tag == Tags.SPEED_BLOCK && SpeedAffects)
         {
-            //var speedBlock = hit.gameObject.GetComponent<SpeedBlock>();
-            Debug.Log("Speed");
             _firstPersonController.BoostSpeed(2);
         }
 
+        Debug.Log("Tag = " + hit.gameObject.tag);
+
         if (hit.gameObject.tag == Tags.JUMP_BLOCK && JumpAffects)
         {
-            Debug.Log("Shove");
-            Debug.Log("UP = " + hit.transform.up);
-            //ApplyForce(new Vector3(0, 1, 0), 100);
-            _firstPersonController.AddVelocity(hit.transform.up * 20);
+            Debug.Log("Jump");
+            _firstPersonController.AddVelocity(this.transform.up * 20);
         }
     }
 

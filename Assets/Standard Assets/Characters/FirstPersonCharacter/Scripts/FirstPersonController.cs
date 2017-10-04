@@ -160,7 +160,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_MoveDir.y = 0;
                 m_MoveDir += m_Impulse;
-                Debug.Log("MoveDir = " + m_MoveDir);
                 m_ImpulseAdded = false;
                 PlayJumpSound();
                 m_Jumping = true;
