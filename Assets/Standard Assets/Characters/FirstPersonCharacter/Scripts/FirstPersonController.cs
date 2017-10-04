@@ -53,7 +53,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		private float z;
 
 		public void setOnFrictionlessBlock () {
-			Debug.Log ("on ice");
 			onFrictionlessBlock = true;
 		}
 
