@@ -22,7 +22,7 @@ public class AffectorBlockCollisionDetection : MonoBehaviour {
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
 		if (hit.gameObject.transform.parent.tag == Tags.FRICTIONLESS_BLOCK && FrictionAffects) {
-			_firstPersonController.setOnFrictionlessBlock();
+			//_firstPersonController.setOnFrictionlessBlock();
 		} 
 
         if (hit.gameObject.tag == Tags.SPEED_BLOCK && SpeedAffects)
@@ -32,7 +32,7 @@ public class AffectorBlockCollisionDetection : MonoBehaviour {
 
         if (hit.gameObject.tag == Tags.JUMP_BLOCK && JumpAffects)
         {
-            _firstPersonController.AddVelocity(this.transform.up * 30);
+            _firstPersonController.AddVelocity(this.transform.up * 35);
         }
     }
 
