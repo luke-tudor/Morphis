@@ -18,6 +18,10 @@ public class ShapeChange : MonoBehaviour
     private IDictionary<Renderer, Color> _defaultMatColors;
     private Renderer[] _renderers;
 
+    private bool _grownThisUpdate = false;
+    private bool _shrunkThisUpdate = false;
+	private bool _collisionDetected = false;
+
     // Use this for initialization
     void Start()
     {
@@ -32,6 +36,19 @@ public class ShapeChange : MonoBehaviour
             _defaultMatColors.Add(renderer, renderer.material.color);
         }
     }
+
+	void OnTriggerEnter(Collider collision)
+	{
+		if (_grownThisUpdate && collision.gameObject.tag != "Untagged") {
+			_collisionDetected = true;
+		}
+	}
+
+	void OnTriggerExit(Collider collision) {
+		if (collision.gameObject.tag != "Untagged") {
+			_collisionDetected = false;
+		}
+	}
 
     // Update is called once per frame
     void Update()
@@ -52,6 +69,10 @@ public class ShapeChange : MonoBehaviour
         if (!Extrudable)
             return;
 
+		if (_grownThisUpdate || _collisionDetected) {
+			return;
+		}
+
         _desiredScale = Mathf.CeilToInt(transform.localScale.y + 0.001f);
     }
 
@@ -65,8 +86,6 @@ public class ShapeChange : MonoBehaviour
 
     void OnValidate()
     {
-        Debug.Log("Foo");
-
         if (!Extrudable)
         {
             foreach (Renderer renderer in _renderers)
@@ -82,5 +101,8 @@ public class ShapeChange : MonoBehaviour
                 renderer.material.color = _defaultMatColors[renderer];
             }
         }
+
+		_collisionDetected = false;
+        _shrunkThisUpdate = true;
     }
 }
