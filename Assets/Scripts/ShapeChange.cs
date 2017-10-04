@@ -83,26 +83,4 @@ public class ShapeChange : MonoBehaviour
 
         _desiredScale = Mathf.FloorToInt(transform.localScale.y - 0.001f);
     }
-
-    void OnValidate()
-    {
-        if (!Extrudable)
-        {
-            foreach (Renderer renderer in _renderers)
-            {
-                Color defaultColor = _defaultMatColors[renderer];
-                Color newColor = new Color(defaultColor.r - 0.8f, defaultColor.g - 0.8f, defaultColor.b - 0.8f);
-                renderer.material.color = newColor;
-            }
-        } else
-        {
-            foreach (Renderer renderer in _renderers)
-            {
-                renderer.material.color = _defaultMatColors[renderer];
-            }
-        }
-
-		_collisionDetected = false;
-        _shrunkThisUpdate = true;
-    }
 }
