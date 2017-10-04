@@ -5,15 +5,25 @@ public class UserIsClose : MonoBehaviour
 {
 
     public GameObject Text;
-    private bool isShowing;
+
+    void Start()
+    {
+        Text.SetActive(false);
+    }
 
     void OnTriggerEnter(Collider other)
     {
-        Text.GetComponent<CanvasGroup>().alpha = 1f;
+        if (other.gameObject.tag == "Player")
+        {
+            Text.SetActive(true);
+        }
     }
 
     void OnTriggerExit (Collider other)
     {
-        Text.GetComponent<CanvasGroup>().alpha = 0f;
+        if (other.gameObject.tag == "Player")
+        {
+            Text.SetActive(false);
+        }
     }
 }
