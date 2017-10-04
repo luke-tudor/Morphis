@@ -5,6 +5,8 @@ public class WandPointer : MonoBehaviour
 {
 
     private Transform _transform;
+	private ShapeChange _shapeChange;
+	private Highlight _highlight;
 
     // Use this for initialization
     void Start()
@@ -15,6 +17,21 @@ public class WandPointer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (_shapeChange != null) {
+			if (Input.GetMouseButton(0)) {
+				_shapeChange.Grow();
+				HighLight ();
+				return;
+			} else if (Input.GetMouseButton(1)) {
+				_shapeChange.Shrink();
+				HighLight ();
+				return;
+			} else {
+				_highlight = null;
+				_shapeChange = null;
+			}
+		}
+
         Ray ray = new Ray(_transform.position, _transform.forward);
         RaycastHit hitInfo;
 
@@ -25,28 +42,32 @@ public class WandPointer : MonoBehaviour
 
             GameObject hitObject = hitInfo.collider.gameObject;
 
-            ShapeChange shapeChange;
             Highlight highlight;
+			_shapeChange = hitObject.GetComponentInParent<ShapeChange> ();
 
-            if ((shapeChange = hitObject.GetComponentInParent<ShapeChange>()) != null)
+			if (_shapeChange != null)
             {
                 // Left mouse down
                 if (Input.GetMouseButton(0))
                 {
-                    shapeChange.Grow();
+					_shapeChange.Grow();
                 }
 
                 // Right mouse down
                 if (Input.GetMouseButton(1))
                 {
-                    shapeChange.Shrink();
+					_shapeChange.Shrink();
                 }
             }
-
-            if ((highlight = hitObject.GetComponentInParent<Highlight>()) != null)
-            {
-                highlight.SetHighlight(true);
-            }
+			_highlight = hitObject.GetComponentInParent<Highlight> ();
+			HighLight();
         }
     }
+
+	void HighLight () {
+		if (_highlight != null)
+		{
+			_highlight.SetHighlight(true);
+		}
+	}
 }

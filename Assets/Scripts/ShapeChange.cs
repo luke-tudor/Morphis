@@ -13,12 +13,26 @@ public class ShapeChange : MonoBehaviour
 
     private bool _grownThisUpdate = false;
     private bool _shrunkThisUpdate = false;
+	private bool _collisionDetected = false;
 
     // Use this for initialization
     void Start()
     {
         _transform = this.GetComponent<Transform>();
     }
+
+	void OnTriggerEnter(Collider collision)
+	{
+		if (_grownThisUpdate && collision.gameObject.tag != "Untagged") {
+			_collisionDetected = true;
+		}
+	}
+
+	void OnTriggerExit(Collider collision) {
+		if (collision.gameObject.tag != "Untagged") {
+			_collisionDetected = false;
+		}
+	}
 
     // Update is called once per frame
     void Update()
@@ -29,8 +43,9 @@ public class ShapeChange : MonoBehaviour
 
     public void Grow()
     {
-        if (_grownThisUpdate)
-            return;
+		if (_grownThisUpdate || _collisionDetected) {
+			return;
+		}
 
         Vector3 newScale = _transform.localScale + (Vector3.up * (Time.deltaTime * GrowthRate));
         newScale.y = Mathf.Min(newScale.y, MaxSize);
@@ -50,6 +65,7 @@ public class ShapeChange : MonoBehaviour
 
         _transform.localScale = newScale;
 
+		_collisionDetected = false;
         _shrunkThisUpdate = true;
     }
 }
