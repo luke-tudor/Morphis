@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
+[ExecuteInEditMode]
 public class ShapeChange : MonoBehaviour
 {
+
+    public bool Extrudable = true;
 
     public float GrowthRate = 1.0f;
 
@@ -10,46 +14,95 @@ public class ShapeChange : MonoBehaviour
     public float MaxSize = 10f;
 
     private Transform _transform;
+    private int _desiredScale;
+    private IDictionary<Renderer, Color> _defaultMatColors;
+    private Renderer[] _renderers;
 
     private bool _grownThisUpdate = false;
     private bool _shrunkThisUpdate = false;
+	private bool _collisionDetected = false;
 
     // Use this for initialization
     void Start()
     {
-        _transform = this.GetComponent<Transform>();
+        _transform = GetComponent<Transform>();
+        _desiredScale = (int)transform.localScale.y;
+        _renderers = GetComponentsInChildren<Renderer>();
+
+        _defaultMatColors = new Dictionary<Renderer, Color>();
+
+        foreach (Renderer renderer in _renderers)
+        {
+            _defaultMatColors.Add(renderer, renderer.material.color);
+        }
     }
+
+	void OnTriggerEnter(Collider collision)
+	{
+		if (_grownThisUpdate && collision.gameObject.tag != "Untagged") {
+			_collisionDetected = true;
+		}
+	}
+
+	void OnTriggerExit(Collider collision) {
+		if (collision.gameObject.tag != "Untagged") {
+			_collisionDetected = false;
+		}
+	}
 
     // Update is called once per frame
     void Update()
     {
-        _shrunkThisUpdate = false;
-        _grownThisUpdate = false;
+        if (Extrudable && !Mathf.Approximately(_desiredScale, transform.localScale.y))
+        {
+            Vector3 newScale = _transform.localScale;
+
+            newScale.y = Mathf.MoveTowards(newScale.y, _desiredScale, Time.deltaTime * GrowthRate);
+            newScale.y = Mathf.Clamp(newScale.y, MinSize, MaxSize);
+
+            _transform.localScale = newScale;
+        }
     }
 
     public void Grow()
     {
-        if (_grownThisUpdate)
+        if (!Extrudable)
             return;
 
-        Vector3 newScale = _transform.localScale + (Vector3.up * (Time.deltaTime * GrowthRate));
-        newScale.y = Mathf.Min(newScale.y, MaxSize);
+		if (_grownThisUpdate || _collisionDetected) {
+			return;
+		}
 
-        _transform.localScale = newScale;
-
-        _grownThisUpdate = true;
+        _desiredScale = Mathf.CeilToInt(transform.localScale.y + 0.001f);
     }
 
     public void Shrink()
-    {
-        if (_shrunkThisUpdate)
+    {      
+        if (!Extrudable)
             return;
 
-        Vector3 newScale = _transform.localScale - (Vector3.up * (Time.deltaTime * GrowthRate));
-        newScale.y = Mathf.Max(newScale.y, MinSize);
+        _desiredScale = Mathf.FloorToInt(transform.localScale.y - 0.001f);
+    }
 
-        _transform.localScale = newScale;
+    void OnValidate()
+    {
+        if (!Extrudable)
+        {
+            foreach (Renderer renderer in _renderers)
+            {
+                Color defaultColor = _defaultMatColors[renderer];
+                Color newColor = new Color(defaultColor.r - 0.8f, defaultColor.g - 0.8f, defaultColor.b - 0.8f);
+                renderer.material.color = newColor;
+            }
+        } else
+        {
+            foreach (Renderer renderer in _renderers)
+            {
+                renderer.material.color = _defaultMatColors[renderer];
+            }
+        }
 
+		_collisionDetected = false;
         _shrunkThisUpdate = true;
     }
 }

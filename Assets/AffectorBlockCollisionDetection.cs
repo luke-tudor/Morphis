@@ -10,6 +10,7 @@ public class AffectorBlockCollisionDetection : MonoBehaviour {
 
     public bool SpeedAffects;
     public bool JumpAffects;
+	public bool FrictionAffects;
 
 	// Use this for initialization
 	void Start () {
@@ -20,25 +21,18 @@ public class AffectorBlockCollisionDetection : MonoBehaviour {
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-
-		if (hit.gameObject.transform.parent.tag == Tags.FRICTIONLESS_BLOCK) {
-			Debug.Log ("Frictionless");
+		if (hit.gameObject.transform.parent.tag == Tags.FRICTIONLESS_BLOCK && FrictionAffects) {
 			_firstPersonController.setOnFrictionlessBlock();
 		} 
 
-        if (hit.gameObject.transform.parent.tag == Tags.SPEED_BLOCK && SpeedAffects)
+        if (hit.gameObject.tag == Tags.SPEED_BLOCK && SpeedAffects)
         {
-            //var speedBlock = hit.gameObject.GetComponent<SpeedBlock>();
-            Debug.Log("Speed");
             _firstPersonController.BoostSpeed(2);
         }
 
         if (hit.gameObject.tag == Tags.JUMP_BLOCK && JumpAffects)
         {
-            Debug.Log("Shove");
-            Debug.Log("UP = " + hit.transform.up);
-            //ApplyForce(new Vector3(0, 1, 0), 100);
-            _firstPersonController.AddVelocity(hit.transform.up * 20);
+            _firstPersonController.AddVelocity(this.transform.up * 20);
         }
     }
 
