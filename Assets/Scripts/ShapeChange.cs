@@ -27,14 +27,6 @@ public class ShapeChange : MonoBehaviour
     {
         _transform = GetComponent<Transform>();
         _desiredScale = (int)transform.localScale.y;
-        _renderers = GetComponentsInChildren<Renderer>();
-
-        _defaultMatColors = new Dictionary<Renderer, Color>();
-
-        foreach (Renderer renderer in _renderers)
-        {
-            _defaultMatColors.Add(renderer, renderer.material.color);
-        }
     }
 
 	void OnTriggerEnter(Collider collision)
@@ -82,27 +74,5 @@ public class ShapeChange : MonoBehaviour
             return;
 
         _desiredScale = Mathf.FloorToInt(transform.localScale.y - 0.001f);
-    }
-
-    void OnValidate()
-    {
-        if (!Extrudable)
-        {
-            foreach (Renderer renderer in _renderers)
-            {
-                Color defaultColor = _defaultMatColors[renderer];
-                Color newColor = new Color(defaultColor.r - 0.8f, defaultColor.g - 0.8f, defaultColor.b - 0.8f);
-                renderer.material.color = newColor;
-            }
-        } else
-        {
-            foreach (Renderer renderer in _renderers)
-            {
-                renderer.material.color = _defaultMatColors[renderer];
-            }
-        }
-
-		_collisionDetected = false;
-        _shrunkThisUpdate = true;
     }
 }

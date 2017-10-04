@@ -32,7 +32,7 @@ public class AffectorBlockCollisionDetection : MonoBehaviour {
 
         if (hit.gameObject.tag == Tags.JUMP_BLOCK && JumpAffects)
         {
-            _firstPersonController.AddVelocity(this.transform.up * 20);
+            _firstPersonController.AddVelocity(this.transform.up * 30);
         }
     }
 
