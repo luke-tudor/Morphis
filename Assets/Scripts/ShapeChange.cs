@@ -35,6 +35,10 @@ public class ShapeChange : MonoBehaviour
         {
             _defaultMatColors.Add(renderer, renderer.material.color);
         }
+        if (GetComponentInChildren<Transform>().name == "BrokenCube")
+        {
+            Extrudable = false;
+        }
     }
 
 	void OnTriggerEnter(Collider collision)
