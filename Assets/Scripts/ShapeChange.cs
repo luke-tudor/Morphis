@@ -17,27 +17,27 @@ public class ShapeChange : MonoBehaviour
     private int _desiredScale;
     private IDictionary<Renderer, Color> _defaultMatColors;
     private Renderer[] _renderers;
-
-    private bool _grownThisUpdate = false;
-    private bool _shrunkThisUpdate = false;
-	private bool _collisionDetected = false;
+	private bool _collisionDetected;
+	private bool _grownThisUpdate;
 
     // Use this for initialization
     void Start()
     {
         _transform = GetComponent<Transform>();
         _desiredScale = (int)transform.localScale.y;
+		_collisionDetected = false;
+		_grownThisUpdate = false;
     }
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if (_grownThisUpdate && collision.gameObject.tag != "Untagged") {
+		if (_grownThisUpdate && collision.name != "Player") {
 			_collisionDetected = true;
 		}
 	}
 
 	void OnTriggerExit(Collider collision) {
-		if (collision.gameObject.tag != "Untagged") {
+		if (collision.name == "Cube") {
 			_collisionDetected = false;
 		}
 	}
@@ -45,7 +45,7 @@ public class ShapeChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Extrudable && !Mathf.Approximately(_desiredScale, transform.localScale.y))
+		if (!_collisionDetected && Extrudable && !Mathf.Approximately(_desiredScale, transform.localScale.y))
         {
             Vector3 newScale = _transform.localScale;
 
@@ -58,21 +58,19 @@ public class ShapeChange : MonoBehaviour
 
     public void Grow()
     {
-        if (!Extrudable)
+		if (!Extrudable || _collisionDetected)
             return;
-
-		if (_grownThisUpdate || _collisionDetected) {
-			return;
-		}
-
-        _desiredScale = Mathf.CeilToInt(transform.localScale.y + 0.001f);
-    }
+		
+		_grownThisUpdate = true;
+		_desiredScale = Mathf.CeilToInt(transform.localScale.y + 0.001f);
+	}
 
     public void Shrink()
     {      
         if (!Extrudable)
             return;
 
-        _desiredScale = Mathf.FloorToInt(transform.localScale.y - 0.001f);
+		_collisionDetected = false;
+		_desiredScale = Mathf.FloorToInt(transform.localScale.y - 0.001f);
     }
 }
