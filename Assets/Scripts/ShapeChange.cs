@@ -19,7 +19,7 @@ public class ShapeChange : MonoBehaviour
     private Renderer[] _renderers;
 	private bool _collisionDetected;
 	private bool _grownThisUpdate;
-
+    
     // Use this for initialization
     void Start()
     {
