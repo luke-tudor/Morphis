@@ -24,4 +24,13 @@ using UnityStandardAssets.Characters.FirstPerson;
 			StarSpawner.SendMessage ("UpdateText");
 		}
 
+		void OnTriggerEnter (Collider other)
+		{
+		if (other.gameObject.CompareTag ("Player")) {
+			Collected ();
+			gameObject.SetActive (false);
+			}
+		}
+
+
 	}
