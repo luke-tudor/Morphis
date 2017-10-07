@@ -10,4 +10,4 @@ contributors:
 	- Luke Tudor
 	- Charles Carey
 	- Fraser McIntosh
-	- Keiran Folwell
+	- Kieran Folwell
