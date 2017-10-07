@@ -44,4 +44,9 @@ public class StarSpawner : MonoBehaviour {
 		starCount = starCount + 1;
 		SetStarCountText ();
 	}
+
+    public int GetStarCount()
+    {
+        return starCount;
+    }
 }
