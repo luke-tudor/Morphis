@@ -308,13 +308,5 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_ImpulseAdded = true;
             m_Impulse = velocity;     
         }
-
-		void OnTriggerEnter (Collider other)
-		{
-			if (other.gameObject.CompareTag ("Star")) {
-				other.SendMessage ("Collected");
-				other.gameObject.SetActive (false);
-			}
-		}
     }
 }
