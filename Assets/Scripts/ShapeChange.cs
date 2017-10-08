@@ -31,7 +31,17 @@ public class ShapeChange : MonoBehaviour
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if (_grownThisUpdate && collision.name != "Player") {
+		if (collision.name == "Player") {
+			Vector3 closestPoint = collision.ClosestPointOnBounds(this.gameObject.transform.position);
+			closestPoint.y = collision.gameObject.transform.position.y;
+			Vector3 newPosition = collision.gameObject.transform.position - closestPoint;
+			newPosition = newPosition * 2;
+			newPosition += collision.gameObject.transform.position;
+			collision.gameObject.transform.position = newPosition;
+			return;
+		}
+
+		if (_grownThisUpdate) {
 			_collisionDetected = true;
 		}
 	}
