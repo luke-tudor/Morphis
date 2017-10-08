@@ -42,7 +42,11 @@ public class StarSpawner : MonoBehaviour {
 	public void UpdateText()
 	{
 		starCount = starCount + 1;
+		if (starCount >= numberOfStars) {
+			StarCountText.text = "Congratulations! You've collected all the stars on this level!";
+		}else{
 		SetStarCountText ();
+		}
 	}
 
     public int GetStarCount()
