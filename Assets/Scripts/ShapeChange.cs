@@ -14,11 +14,13 @@ public class ShapeChange : MonoBehaviour
     public float MaxSize = 10f;
 
     private Transform _transform;
-    private int _desiredScale;
+    private float _desiredScale;
     private IDictionary<Renderer, Color> _defaultMatColors;
     private Renderer[] _renderers;
 	private bool _collisionDetected;
 	private bool _grownThisUpdate;
+
+    public AudioSource grindingNoise;
     
     // Use this for initialization
     void Start()
@@ -63,6 +65,13 @@ public class ShapeChange : MonoBehaviour
             newScale.y = Mathf.Clamp(newScale.y, MinSize, MaxSize);
 
             _transform.localScale = newScale;
+
+        } else if (grindingNoise != null)
+        {
+            if (grindingNoise.isPlaying)
+            {
+                grindingNoise.Stop();
+            }
         }
     }
 
@@ -73,7 +82,10 @@ public class ShapeChange : MonoBehaviour
 		
 		_grownThisUpdate = true;
 		_desiredScale = Mathf.CeilToInt(transform.localScale.y + 0.001f);
-	}
+
+        if (!grindingNoise.isPlaying)
+            grindingNoise.Play();
+    }
 
     public void Shrink()
     {      
@@ -82,5 +94,9 @@ public class ShapeChange : MonoBehaviour
 
 		_collisionDetected = false;
 		_desiredScale = Mathf.FloorToInt(transform.localScale.y - 0.001f);
+        _desiredScale = Mathf.Max(0.001f, _desiredScale);
+
+        if(!grindingNoise.isPlaying)
+            grindingNoise.Play();
     }
 }
