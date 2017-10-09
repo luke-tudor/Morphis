@@ -2,11 +2,11 @@
 	
 ## How To Run
 ### Windows - x86-64
-1. Download file prototype.zip from releases tab in github
+1. Download file prototype.zip from releases tab in github (PROTOTYPE)
 2. Unzip prototype.zip into the desired directory
 3. Double-click on prototype.exe
 4. Check "Windowed" box in GUI configuration
 5. Select graphics quality ("Simple" is fine)
 6. Click "Play!"
-7. Controls are W, A, S, D for movement, SPACE for jumping, mouse for looking around, left mouse to extract, right mouse to retract
+7. Controls are W, A, S, D for movement, SPACE for jumping, mouse for looking around, left mouse to extract, right mouse to retract, SHIFT to sprint (works best whilst standing on green blocks)
 8. When in game, press ESC to allow the cursor to exit the window, click on the "X" button to quit
