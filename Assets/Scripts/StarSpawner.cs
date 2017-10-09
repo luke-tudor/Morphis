@@ -44,7 +44,7 @@ public class StarSpawner : MonoBehaviour {
 		starCount = starCount + 1;
 
         // Update how many stars the player has
-        PlayerPrefs.GetInt("stats", starCount);
+        PlayerPrefs.GetInt("stars", starCount);
 		if (starCount >= numberOfStars) {
 			StarCountText.text = "Congratulations! You've collected all the stars on this level!";
 		}else{

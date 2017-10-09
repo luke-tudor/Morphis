@@ -9,10 +9,10 @@ public class DisplayStarsCollected : MonoBehaviour {
 
     private Text text;
 
-    // Get the amount of stars and update the text
+    // Get the amount of stars and update text
     void Start()
     {
         text = GetComponent<Text>();
-        text.text = "You collected " + PlayerPrefs.GetInt("starts") + " stars!";
+        text.text = "You collected " + PlayerPrefs.GetInt("stars") + " stars!";
     }
 }
