@@ -1,5 +1,8 @@
 # GameDesign
 
+To run prototype:
+Download and unzip release MorphisPrototype
+Run target/morphis.exe
 
 contributors: 
 
