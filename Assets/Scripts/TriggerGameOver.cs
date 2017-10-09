@@ -7,8 +7,6 @@ public class TriggerGameOver : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("WHAT");
-        Debug.Log(other.tag);
         if (other.CompareTag("ExitLevelTrigger"))
         {
 
