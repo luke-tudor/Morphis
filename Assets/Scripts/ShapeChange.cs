@@ -51,6 +51,7 @@ public class ShapeChange : MonoBehaviour
     void OnTriggerEnter(Collider collision)
     {
         // Move the player back when it collides with the growing block
+        
         if (collision.name == "Player")
         {
             Vector3 closestPoint = collision.ClosestPointOnBounds(this.gameObject.transform.position);
