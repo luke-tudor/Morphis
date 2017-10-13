@@ -82,6 +82,8 @@ public class ShapeChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         // If current size is not the desired size then scale towards the desired size
         if (!_collisionDetected && Extrudable && !Mathf.Approximately(_desiredScale, transform.localScale.y))
         {
@@ -100,6 +102,11 @@ public class ShapeChange : MonoBehaviour
             {
                 _grindingNoise.Stop();
             }
+        }
+
+        if (Mathf.Approximately(transform.localScale.y, MinSize) && _grindingNoise != null && _grindingNoise.isPlaying)
+        {
+            _grindingNoise.Stop();
         }
     }
 
