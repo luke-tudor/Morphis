@@ -9,5 +9,6 @@ public static class Tags
     public const String JUMP_BLOCK = "BounceSurface";
     public const String SPEED_BLOCK = "SpeedSurface";
 	public const String FRICTIONLESS_BLOCK = "FrictionlessSurface";
+    public const String DAMAGE_BLOCK = "DamageSurface";
 }
 

@@ -11,6 +11,7 @@ public class AffectorBlockCollisionDetection : MonoBehaviour
     CharacterController _characterController;
     FirstPersonController _firstPersonController;
     Rigidbody _rigidbody;
+    PlayerHealth _playerHealth;
 
     public bool SpeedAffects;
     public bool JumpAffects;
@@ -22,6 +23,7 @@ public class AffectorBlockCollisionDetection : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _firstPersonController = GetComponent<FirstPersonController>();
         _rigidbody = GetComponent<Rigidbody>();
+        _playerHealth = GetComponent<PlayerHealth>();
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -44,6 +46,13 @@ public class AffectorBlockCollisionDetection : MonoBehaviour
         {
             // Add upwards velocity to player controller to make them jump
             _firstPersonController.AddVelocity(this.transform.up * 35);
+        }
+
+        //Damage blocks
+        if (hit.gameObject.tag == Tags.DAMAGE_BLOCK)
+        {
+            //player takes damage
+            _playerHealth.TakeDamage(1);
         }
     }
 }

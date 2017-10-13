@@ -28,6 +28,8 @@ public class ShapeChange : MonoBehaviour
     /// </summary>
     public float MaxSize = 10f;
 
+    public AudioSource _grindingNoise;
+
     /// <summary>
     /// Size to grow or shrink towards.
     /// </summary>
@@ -92,6 +94,13 @@ public class ShapeChange : MonoBehaviour
 
             _transform.localScale = newScale;
         }
+        else if(_grindingNoise != null)
+        {
+            if (_grindingNoise.isPlaying)
+            {
+                _grindingNoise.Stop();
+            }
+        }
     }
 
     /// <summary>
@@ -104,6 +113,11 @@ public class ShapeChange : MonoBehaviour
 
         _grownThisUpdate = true;
         _desiredScale = Mathf.CeilToInt(transform.localScale.y + 0.001f);
+
+        if (!_grindingNoise.isPlaying)
+        {
+            _grindingNoise.Play();
+        }
     }
 
     /// <summary>
@@ -116,5 +130,10 @@ public class ShapeChange : MonoBehaviour
 
         _collisionDetected = false;
         _desiredScale = Mathf.FloorToInt(transform.localScale.y - 0.001f);
+
+        if (!_grindingNoise.isPlaying)
+        {
+            _grindingNoise.Play();
+        }
     }
 }
