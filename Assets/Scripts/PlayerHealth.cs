@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PlayerHealth : MonoBehaviour {
@@ -45,7 +46,7 @@ public class PlayerHealth : MonoBehaviour {
         currentHealth -= amount;
         healthSlider.value = currentHealth;
 
-        playerAudio.Play();
+        //playerAudio.Play();
 
         if(currentHealth <= 0 && !isDead)
         {
@@ -57,8 +58,11 @@ public class PlayerHealth : MonoBehaviour {
     {
         isDead = true;
 
-        //reset the level/ reset the person
+        Debug.Log("Die");
 
+        //reset the level/ reset the person
+        string currentScene = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentScene);
 
         //return HP to full
         currentHealth = startingHealth;
