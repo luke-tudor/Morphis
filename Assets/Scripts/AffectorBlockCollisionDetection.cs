@@ -34,6 +34,12 @@ public class AffectorBlockCollisionDetection : MonoBehaviour
             //_firstPersonController.setOnFrictionlessBlock();
         }
 
+        // Frictionless blocks
+        if (hit.gameObject.transform.parent.tag == Tags.AUTOSHRINK_BLOCK)
+        {
+            //GameObject.Destroy(hit.collider.transform.parent.gameObject);
+        }
+
         // Speed blocks
         if (hit.gameObject.tag == Tags.SPEED_BLOCK && SpeedAffects)
         {
