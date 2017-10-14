@@ -143,4 +143,9 @@ public class ShapeChange : MonoBehaviour
             _grindingNoise.Play();
         }
     }
+
+    public void SetDesiredSize(int desiredScale)
+    {
+        _desiredScale = desiredScale;
+    }
 }
