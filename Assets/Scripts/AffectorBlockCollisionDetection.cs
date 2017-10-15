@@ -52,6 +52,7 @@ public class AffectorBlockCollisionDetection : MonoBehaviour
         {
             // Add upwards velocity to player controller to make them jump
             _firstPersonController.AddVelocity(this.transform.up * 35);
+            hit.gameObject.GetComponent<AudioSource>().Play();
         }
 
         //Damage blocks
