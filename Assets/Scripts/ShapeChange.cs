@@ -35,6 +35,7 @@ public class ShapeChange : MonoBehaviour
     /// </summary>
     private int _desiredScale;
 
+	public List<ShapeChange> _linkedShapes;
     private Transform _transform;
     private IDictionary<Renderer, Color> _defaultMatColors;
     private Renderer[] _renderers;
@@ -119,6 +120,14 @@ public class ShapeChange : MonoBehaviour
     /// </summary>
 	public void Grow()
 	{
+		if (_linkedShapes != null && _linkedShapes.Count > 0) {
+			for (int i = 0; i < _linkedShapes.Count; i++) {
+				if (_linkedShapes [i] != null) {
+					_linkedShapes [i].Grow ();
+				}
+			}
+		}
+
 		if (!Extrudable || _collisionDetected)
 			return;
 
@@ -157,6 +166,14 @@ public class ShapeChange : MonoBehaviour
     /// </summary>
     public void Shrink()
     {
+		if (_linkedShapes != null && _linkedShapes.Count > 0) {
+			for (int i = 0; i < _linkedShapes.Count; i++) {
+				if (_linkedShapes [i] != null) {
+					_linkedShapes [i].Shrink ();
+				}
+			}
+		}
+
         if (!Extrudable)
             return;
 
