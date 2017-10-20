@@ -6,11 +6,13 @@ public class UserIsClose : MonoBehaviour
 
     public GameObject Text;
 
+    //When level initialises, set text invisible/inactive
     void Start()
     {
         Text.SetActive(false);
     }
 
+    //When the player collides with hitbox, set text visible/active
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
@@ -19,6 +21,7 @@ public class UserIsClose : MonoBehaviour
         }
     }
 
+    //When player leaves hitbox, set text back to invisible/inactive
     void OnTriggerExit (Collider other)
     {
         if (other.gameObject.tag == "Player")
