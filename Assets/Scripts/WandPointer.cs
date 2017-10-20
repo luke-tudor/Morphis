@@ -27,7 +27,9 @@ public class WandPointer : MonoBehaviour
             { // Left mouse button down
 
                 // Grow and highlight block
-                _shapeChange.Grow();
+				if (_shapeChange.Extrudable || !_shapeChange._isLinked) {
+					_shapeChange.Grow ();
+				}
                 HighLight();
                 return;
             }
@@ -35,7 +37,9 @@ public class WandPointer : MonoBehaviour
             { // RIght mouse button down
 
                 // Shrink and highlight block
-                _shapeChange.Shrink();
+				if (_shapeChange.Extrudable || !_shapeChange._isLinked) {
+					_shapeChange.Shrink();
+				}
                 HighLight();
                 return;
             }
