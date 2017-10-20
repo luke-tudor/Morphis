@@ -13,6 +13,6 @@ public class DisplayStarsCollected : MonoBehaviour {
     void Start()
     {
         text = GetComponent<Text>();
-        text.text = "You collected " + PlayerPrefs.GetInt("stars") + " stars!";
+        text.text = "You collected " + StarCount.starCount + " stars!";
     }
 }

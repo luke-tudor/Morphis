@@ -26,6 +26,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 			AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 			GameObject StarSpawner = GameObject.FindGameObjectWithTag ("StarSpawner");
 			StarSpawner.SendMessage ("UpdateText");
+        StarCount.starCount++;
 		}
 			
 		//Method called when another object collides with Star
