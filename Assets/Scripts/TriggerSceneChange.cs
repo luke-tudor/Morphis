@@ -12,10 +12,8 @@ public class TriggerSceneChange : MonoBehaviour
     // If the collision is with the player load the next scene
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("hello");
         if (other.CompareTag("Player"))
         {
-            Debug.Log("hello1");
             SceneManager.LoadScene(NextLevel);
         }
     }
