@@ -141,6 +141,10 @@ public class ShapeChange : MonoBehaviour
 	/// </summary>
 	public void Grow()
 	{
+		
+		if (!Extrudable && !_isLinked || _collisionDetected)
+			return;
+
 		if (_linkedShapes != null && _linkedShapes.Count > 0) {
 			for (int i = 0; i < _linkedShapes.Count; i++) {
 				if (_linkedShapes [i] != null) {
@@ -148,10 +152,7 @@ public class ShapeChange : MonoBehaviour
 				}
 			}
 		}
-
-		if (!Extrudable && !_isLinked || _collisionDetected)
-			return;
-
+			
 		if (_growsDown) {
 			GameObject person = GameObject.Find("Player");
 			double heightDifference = this.gameObject.transform.position.y - GetComponent<Collider> ().bounds.size.y - person.transform.position.y;
