@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * Class that is designed to rotate a camera by a specified amount each frame.
+ * Could be used for other purposes however. 
+ */
 public class RotateCamera : MonoBehaviour {
 
     public float rotateSpeed;
