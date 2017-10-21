@@ -9,13 +9,15 @@ public class RotateCamera : MonoBehaviour {
 
     public float rotateSpeed;
 
+    private Vector3 transformVector;
+
 	// Use this for initialization
 	void Start () {
-	
+        transformVector = new Vector3(0, rotateSpeed, 0) * Time.deltaTime;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        transform.Rotate(new Vector3(0, rotateSpeed, 0) * Time.deltaTime);
+        transform.Rotate(transformVector);
 	}
 }
