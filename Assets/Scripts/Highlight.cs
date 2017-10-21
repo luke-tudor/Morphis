@@ -8,7 +8,7 @@ using System.Linq;
 /// </summary>
 public class Highlight : MonoBehaviour
 {
-
+	// highlight colour is 31, 15, 15 or 0.1216, 0.0588, 0.0588
     public Color HighlightColor = new Color(1f, 0f, 0f);
 
     /// <summary>
@@ -29,6 +29,8 @@ public class Highlight : MonoBehaviour
 	private float GValue;
 	private float BValue;
 
+	private Color baseColor;
+
     // Use this for initialization
     void Start()
     {
@@ -39,10 +41,15 @@ public class Highlight : MonoBehaviour
 		counter = 1;
 		increasing = true;
 
+		foreach (Renderer renderer in _renderers) {
+			_defaultColors.Add (renderer, renderer.material.color);
+		}
+
 		getColourValues();
 
-        foreach (Renderer renderer in _renderers)
-            _defaultColors.Add(renderer, renderer.material.color);
+		RValue = baseColor.r;
+		GValue = baseColor.g;
+		BValue = baseColor.b;
     }
 
     // Update is called once per frame
@@ -55,13 +62,15 @@ public class Highlight : MonoBehaviour
         {
             // Change rendered materials to highlight color
 
+
+
 			if (increasing) {
 				if (counter <= 100) {
-					counter += 5;
+					counter += 8;
 				}
 			} 
 			else {
-				counter -= 5;
+				counter -= 8;
 			}
 
 			if (counter >= 100) {
@@ -74,17 +83,22 @@ public class Highlight : MonoBehaviour
 				counter = 1;
 			}
 
-			float r = 1 - RValue;
-			float g = 1 - GValue;
-			float b = 1 - BValue;
+			float highlightR = 1f;
+			float highlightG = 0.66f;
+			float highlightB = 0.53f;
+
+			float r = highlightR - RValue;
+			float g = highlightG - GValue;
+			float b = highlightB - BValue;
 
 			float y = 100;
 
 			float x = counter / y;
 
+			Color newColor = new Color (RValue + (x * r), GValue + (x * g), BValue + (x * b));
 
 			foreach (Renderer renderer in _renderers)
-				renderer.material.color = new Color (RValue+(x*r), GValue+(x*g), BValue+(x*b));
+				renderer.material.color = newColor;
 
 
         }
@@ -97,7 +111,9 @@ public class Highlight : MonoBehaviour
 
                 if (_defaultColors.TryGetValue(renderer, out defaultColor))
                 {
-                    renderer.material.color = defaultColor;
+
+					baseColor = defaultColor;
+					renderer.material.color = defaultColor;
                 }
             }
 
@@ -118,15 +134,9 @@ public class Highlight : MonoBehaviour
 	private void getColourValues()
 	{
 
-		foreach (Renderer renderer in _renderers) {
-			Color defaultColour;
-			_defaultColors.TryGetValue (renderer, out defaultColour);
+		var random = _defaultColors.First ();
 
-			RValue = defaultColour.r;
-			GValue = defaultColour.g;
-			BValue = defaultColour.b;
-		}
-
+		baseColor = random.Value;
 
 	}
 }
