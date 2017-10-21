@@ -260,4 +260,9 @@ public class ShapeChange : MonoBehaviour
 		}
 		return false;
 	}
+
+    public void setExtrudable(bool val)
+    {
+        Extrudable = val;
+    }
 }
