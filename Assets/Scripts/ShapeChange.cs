@@ -62,6 +62,9 @@ public class ShapeChange : MonoBehaviour
 
 		if (collision.name == "Player")
 		{
+			if (_growsUp) {
+				return;
+			}
 			if (!PlayerWillBePushedOutOfBounds ()) {
 				Vector3 closestPoint = collision.ClosestPointOnBounds(this.gameObject.transform.position);
 				closestPoint.y = collision.gameObject.transform.position.y;
