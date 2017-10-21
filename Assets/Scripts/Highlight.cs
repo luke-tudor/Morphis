@@ -66,11 +66,11 @@ public class Highlight : MonoBehaviour
 
 			if (increasing) {
 				if (counter <= 100) {
-					counter += 8;
+					counter += 4;
 				}
 			} 
 			else {
-				counter -= 8;
+				counter -= 4;
 			}
 
 			if (counter >= 100) {
