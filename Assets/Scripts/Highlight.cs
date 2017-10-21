@@ -22,12 +22,25 @@ public class Highlight : MonoBehaviour
     private IDictionary<Renderer, Color> _defaultColors;
     private Renderer[] _renderers;
 
+	private int counter;
+	private bool increasing;
+
+	private float RValue;
+	private float GValue;
+	private float BValue;
+
     // Use this for initialization
     void Start()
     {
         // Record colors of all objects
         _defaultColors = new Dictionary<Renderer, Color>();
         _renderers = GetComponentsInChildren<Renderer>();
+
+		counter = 1;
+		increasing = true;
+
+		getColourValues();
+
         foreach (Renderer renderer in _renderers)
             _defaultColors.Add(renderer, renderer.material.color);
     }
@@ -36,11 +49,44 @@ public class Highlight : MonoBehaviour
     void Update()
     {
 
+		//Debug.Log (RValue);
+
         if (_highlighted)
         {
             // Change rendered materials to highlight color
-            foreach (Renderer renderer in _renderers)
-                renderer.material.color = HighlightColor;
+
+			if (increasing) {
+				if (counter <= 100) {
+					counter += 5;
+				}
+			} 
+			else {
+				counter -= 5;
+			}
+
+			if (counter >= 100) {
+				increasing = false;
+			} else if (counter <= 1) {
+				increasing = true;
+			}
+
+			if (counter < 0) {
+				counter = 1;
+			}
+
+			float r = 1 - RValue;
+			float g = 1 - GValue;
+			float b = 1 - BValue;
+
+			float y = 100;
+
+			float x = counter / y;
+
+
+			foreach (Renderer renderer in _renderers)
+				renderer.material.color = new Color (RValue+(x*r), GValue+(x*g), BValue+(x*b));
+
+
         }
         else
         {
@@ -68,4 +114,19 @@ public class Highlight : MonoBehaviour
     {
         _highlighted = value;
     }
+
+	private void getColourValues()
+	{
+
+		foreach (Renderer renderer in _renderers) {
+			Color defaultColour;
+			_defaultColors.TryGetValue (renderer, out defaultColour);
+
+			RValue = defaultColour.r;
+			GValue = defaultColour.g;
+			BValue = defaultColour.b;
+		}
+
+
+	}
 }
