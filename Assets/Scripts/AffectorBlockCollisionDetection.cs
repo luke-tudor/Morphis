@@ -44,21 +44,14 @@ public class AffectorBlockCollisionDetection : MonoBehaviour
         if (hit.gameObject.tag == Tags.SPEED_BLOCK && SpeedAffects)
         {
             // Change player speed
-            _firstPersonController.BoostSpeed(2);
-            
-            // Play speed sound if moving
-            if (_characterController.velocity.magnitude >= 0.2)
-            {
-                // Play speed sound here
-                hit.gameObject.GetComponent<AudioSource>().Play();
-            }
+            _firstPersonController.BoostSpeed(2.5f);
         }
 
         // Jump blocks
         if (hit.gameObject.tag == Tags.JUMP_BLOCK && JumpAffects)
         {
             // Add upwards velocity to player controller to make them jump
-            _firstPersonController.AddVelocity(this.transform.up * 35);
+            _firstPersonController.AddVelocity(this.transform.up * 40);
             hit.gameObject.GetComponent<AudioSource>().Play();
         }
 
