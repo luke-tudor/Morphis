@@ -8,11 +8,12 @@ using UnityEngine.SceneManagement;
  */
 public class TitleButtons : MonoBehaviour
 {
+    public string NextLevel;
 
     // Load the prototype level
     public void Play()
     {
-        SceneManager.LoadScene("PrototypeLevel2");
+        SceneManager.LoadScene(NextLevel);
     }
 
     // Quit the game
