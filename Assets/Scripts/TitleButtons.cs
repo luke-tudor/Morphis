@@ -10,10 +10,22 @@ public class TitleButtons : MonoBehaviour
 {
     public string NextLevel;
 
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     // Load the prototype level
     public void Play()
     {
-        SceneManager.LoadScene(NextLevel);
+        if (NextLevel != null && NextLevel != "")
+        {
+            SceneManager.LoadScene(NextLevel);
+        }
+        else {
+            SceneManager.LoadScene(PlayerPrefs.GetString("NextLevel"));
+        }
     }
 
     // Quit the game

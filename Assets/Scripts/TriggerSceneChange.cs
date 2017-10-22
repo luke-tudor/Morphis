@@ -8,13 +8,20 @@ using UnityEngine.SceneManagement;
  */
 public class TriggerSceneChange : MonoBehaviour
 {
+    public string NextScene;
     public string NextLevel;
-    // If the collision is with the player load the next scene
-    void OnTriggerEnter(Collider other)
+
+    // Update what level is next
+    void Start()
+    {
+        PlayerPrefs.SetString("NextLevel", NextLevel);
+    }
+        // If the collision is with the player load the next scene
+        void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(NextLevel);
+            SceneManager.LoadScene(NextScene);
         }
     }
 }
