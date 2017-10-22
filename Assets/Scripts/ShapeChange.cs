@@ -52,8 +52,13 @@ public class ShapeChange : MonoBehaviour
 		_desiredScale = (int)transform.localScale.y;
 		_collisionDetected = false;
 		_grownThisUpdate = false;
-		_growsDown = transform.rotation.eulerAngles.y == 180 && transform.rotation.eulerAngles.z == 180;
-		_growsUp = transform.rotation.eulerAngles.x == 0 && transform.rotation.eulerAngles.z == 0 && transform.rotation.eulerAngles.y == 0;
+
+		Vector3 eulerAngles = transform.rotation.eulerAngles;
+		eulerAngles.x = Mathf.CeilToInt (eulerAngles.x);
+		eulerAngles.y = Mathf.CeilToInt (eulerAngles.y);
+		eulerAngles.z = Mathf.CeilToInt (eulerAngles.z);
+		_growsDown = eulerAngles.y == 180 && eulerAngles.z == 180;
+		_growsUp = eulerAngles.x == 0 && eulerAngles.z == 0;
 	}
 
 	void OnTriggerEnter(Collider collision)
@@ -65,6 +70,7 @@ public class ShapeChange : MonoBehaviour
 			if (_growsUp) {
 				return;
 			}
+
 			if (!PlayerWillBePushedOutOfBounds ()) {
 				Vector3 closestPoint = collision.ClosestPointOnBounds(this.gameObject.transform.position);
 				closestPoint.y = collision.gameObject.transform.position.y;

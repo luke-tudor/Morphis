@@ -46,7 +46,10 @@ public class PlayerHealth : MonoBehaviour {
         currentHealth -= amount;
         healthSlider.value = currentHealth;
 
-        playerHurtSound.Play();
+        if (!playerHurtSound.isPlaying)
+        {
+            playerHurtSound.Play();
+        }
 
         if(currentHealth <= 0 && !isDead)
         {
