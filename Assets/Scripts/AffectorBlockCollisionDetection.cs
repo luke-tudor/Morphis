@@ -51,7 +51,7 @@ public class AffectorBlockCollisionDetection : MonoBehaviour
         if (hit.gameObject.tag == Tags.JUMP_BLOCK && JumpAffects)
         {
             // Add upwards velocity to player controller to make them jump
-            _firstPersonController.AddVelocity(this.transform.up * 40);
+            _firstPersonController.AddVelocity(this.transform.up * 37);
             hit.gameObject.GetComponent<AudioSource>().Play();
         }
 
