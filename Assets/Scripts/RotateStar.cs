@@ -25,7 +25,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 			//Plaus pickupsound and updates UI text
 			AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 			GameObject StarSpawner = GameObject.FindGameObjectWithTag ("StarSpawner");
-			StarSpawner.SendMessage ("UpdateText");
+			StarSpawner.SendMessage ("UpdateUI");
         StarCount.starCount++;
 		}
 			

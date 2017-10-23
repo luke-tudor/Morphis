@@ -11,7 +11,6 @@ public class StarSpawner : MonoBehaviour {
 	void Start () {
 		//Initialise UI text
 		starCount = 0;
-		SetStarCountText ();
 
 		//Retrieve all star spawn position objects
 		spawners = GameObject.FindGameObjectsWithTag ("StarLocation");
@@ -37,26 +36,19 @@ public class StarSpawner : MonoBehaviour {
 		}
 	}
 
-	//Updates Star UI text
-	private void SetStarCountText()
-	{
-		StarCountText.text = "Stars Collected: " + starCount.ToString () + " out of " + numberOfStars.ToString();
-	}
-
-	//Updates text for UI and exit screen
-	public void UpdateText()
+	//Updates images for UI and exit screen
+	public void UpdateUI()
 	{
 		starCount = starCount + 1;
-
+		if (starCount == 1) {
+			GameObject.Find("StarComplete1").GetComponent<Image>().enabled = true;
+		} else if (starCount == 2) {
+			GameObject.Find("StarComplete2").GetComponent<Image>().enabled = true;
+		} else if (starCount == 3) {
+			GameObject.Find("StarComplete3").GetComponent<Image>().enabled = true;
+		}
         // Update how many stars the player has
         PlayerPrefs.GetInt("stars", starCount);
-
-		//If player collects all stars, display congrats message
-		if (starCount >= numberOfStars) {
-			StarCountText.text = "Congratulations! You've collected all the stars on this level!";
-		}else{
-		SetStarCountText ();
-		}
 	}
 
 	//Returns star count
