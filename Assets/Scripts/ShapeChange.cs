@@ -214,7 +214,20 @@ public class ShapeChange : MonoBehaviour
 		}
 	}
 
-	public void SetDesiredSize(int desiredScale)
+    public void ShrinkCompletely()
+    {
+        Shrink();
+        _desiredScale = (int)MinSize;
+    }
+
+    public void GrowCompletely()
+    {
+        Grow();
+        _desiredScale = (int)MaxSize;
+        Debug.Log("Grow to : " + _desiredScale);
+    }
+
+    public void SetDesiredSize(int desiredScale)
 	{
 		_desiredScale = desiredScale;
 	}

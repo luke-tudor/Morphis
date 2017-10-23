@@ -6,6 +6,7 @@ public class Pattern : MonoBehaviour {
     public GameObject[] toExtrude;
     public GameObject[] nonExtrude;
     public GameObject door;
+    private bool doorOpened = false;
 	// Use this for initialization
 	void Start () {
         onExtrude();
@@ -39,10 +40,11 @@ public class Pattern : MonoBehaviour {
 
     public void onExtrude()
     {
-        if (checkIfSolved())
+        if (!doorOpened && checkIfSolved())
         {
             door.SendMessage("setExtrudable", true);
-            door.SendMessage("Shrink");
+            door.SendMessage("ShrinkCompletely");
+            doorOpened = true;
         }
     }
 }
