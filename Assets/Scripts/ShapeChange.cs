@@ -54,17 +54,21 @@ public class ShapeChange : MonoBehaviour
 		_grownThisUpdate = false;
 
 		Vector3 eulerAngles = transform.rotation.eulerAngles;
-		eulerAngles.x = Mathf.CeilToInt (eulerAngles.x);
+		eulerAngles.x = eulerAngles.x < 0 ? Mathf.CeilToInt (eulerAngles.x) : Mathf.FloorToInt (eulerAngles.x);
+		eulerAngles.z = eulerAngles.z < 0 ? Mathf.CeilToInt (eulerAngles.z) : Mathf.FloorToInt (eulerAngles.z);
 		eulerAngles.y = Mathf.CeilToInt (eulerAngles.y);
-		eulerAngles.z = Mathf.CeilToInt (eulerAngles.z);
 		_growsDown = eulerAngles.y == 180 && eulerAngles.z == 180;
 		_growsUp = eulerAngles.x == 0 && eulerAngles.z == 0;
 	}
 
 	void OnTriggerEnter(Collider collision)
 	{
-		// Move the player back when it collides with the growing block
+		// Ignore terminal collisions
+		if (collision.tag == "Terminal") {
+			return;
+		}
 
+		// Move the player back when it collides with the growing block
 		if (collision.name == "Player")
 		{
 			if (_growsUp) {
@@ -172,10 +176,12 @@ public class ShapeChange : MonoBehaviour
 		if (_growsUp) {
 			RaycastHit hit;
 			if(Physics.Raycast (GetComponent<Collider> ().bounds.center, Vector3.up, out hit)) {
-				GameObject person = GameObject.Find("Player");
-				double heightDifference = hit.collider.gameObject.transform.position.y - person.transform.position.y;
-				if (heightDifference <= 3 && isInBoundsOfObject(person)) {
-					return;
+				if (hit.collider.tag != "Terminal") {
+					GameObject person = GameObject.Find("Player");
+					double heightDifference = hit.collider.gameObject.transform.position.y - person.transform.position.y;
+					if (heightDifference <= 3.5 && isInBoundsOfObject(person)) {
+						return;
+					}
 				}
 			}
 		}
