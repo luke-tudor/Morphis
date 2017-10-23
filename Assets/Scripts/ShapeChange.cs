@@ -118,7 +118,6 @@ public class ShapeChange : MonoBehaviour
 	void Update()
 	{
 
-
 		// If current size is not the desired size then scale towards the desired size
 		if (!_collisionDetected && (Extrudable || !Extrudable && _isLinked) && !Mathf.Approximately(_desiredScale, transform.localScale.y))
 		{
@@ -139,7 +138,7 @@ public class ShapeChange : MonoBehaviour
 			}
 		}
 
-		if (Mathf.Approximately(transform.localScale.y, MinSize) && _grindingNoise != null && _grindingNoise.isPlaying)
+		if ((Mathf.Approximately(transform.localScale.y, MinSize) || Mathf.Approximately(transform.localScale.y, MaxSize) ) && _grindingNoise != null && _grindingNoise.isPlaying)
 		{
 			_grindingNoise.Stop();
 		}
