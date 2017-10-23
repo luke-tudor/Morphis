@@ -15,6 +15,7 @@ public class TriggerSceneChange : MonoBehaviour
     void Start()
     {
         PlayerPrefs.SetString("NextLevel", NextLevel);
+        StarCount.starCount = 0;
     }
         // If the collision is with the player load the next scene
         void OnTriggerEnter(Collider other)
