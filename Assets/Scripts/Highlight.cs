@@ -61,9 +61,6 @@ public class Highlight : MonoBehaviour
         if (_highlighted)
         {
             // Change rendered materials to highlight color
-
-
-
 			if (increasing) {
 				if (counter <= 100) {
 					counter += 4;

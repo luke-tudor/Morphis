@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/// <summary>
+/// This class handles closing of a door once the player walks through it
+/// </summary>
 public class CloseDoor : MonoBehaviour {
 
     bool doorClosed = false;
@@ -15,6 +19,10 @@ public class CloseDoor : MonoBehaviour {
 	void Update () {
     }
 
+	/// <summary>
+	/// Raises the trigger enter event to close the door once the player goes through
+	/// </summary>
+	/// <param name="other">Other.</param>
     void OnTriggerEnter(Collider other)
     {
         if (!doorClosed && other.tag == "Player")

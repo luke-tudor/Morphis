@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This class checks if user is close enough to set text objects to be visible
+/// </summary>
 public class UserIsClose : MonoBehaviour
 {
 

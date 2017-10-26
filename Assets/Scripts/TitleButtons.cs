@@ -2,10 +2,9 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-
-/*
- * Class that adds methods that are called when the respective buttons are clicked
- */
+/// <summary>
+/// Class that adds methods that are called when the respective buttons are clicked
+/// </summary>
 public class TitleButtons : MonoBehaviour
 {
     public string NextLevel;

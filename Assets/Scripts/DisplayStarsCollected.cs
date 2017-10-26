@@ -2,9 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 
-/*
- * Class that displays how many stars the player collected at the end of the level
- */
+/// <summary>
+/// Class that displays how many stars the player collected at the end of the level
+/// </summary>
 public class DisplayStarsCollected : MonoBehaviour {
 
     private Text text;

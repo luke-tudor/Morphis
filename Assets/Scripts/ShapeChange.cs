@@ -54,13 +54,21 @@ public class ShapeChange : MonoBehaviour
 		_grownThisUpdate = false;
 
 		Vector3 eulerAngles = transform.rotation.eulerAngles;
+
+		// Round the euler angles as Unity stores Vector3 components as floats
 		eulerAngles.x = eulerAngles.x < 0 ? Mathf.CeilToInt (eulerAngles.x) : Mathf.FloorToInt (eulerAngles.x);
 		eulerAngles.z = eulerAngles.z < 0 ? Mathf.CeilToInt (eulerAngles.z) : Mathf.FloorToInt (eulerAngles.z);
 		eulerAngles.y = Mathf.CeilToInt (eulerAngles.y);
+
+		// Check if the direction the block grows is up or down
 		_growsDown = eulerAngles.y == 180 && eulerAngles.z == 180;
 		_growsUp = eulerAngles.x == 0 && eulerAngles.z == 0;
 	}
 
+	/// <summary>
+	/// Handles block collisions with other gameobjects
+	/// </summary>
+	/// <param name="collision">Collision.</param>
 	void OnTriggerEnter(Collider collision)
 	{
 		// Ignore terminal collisions
@@ -71,10 +79,12 @@ public class ShapeChange : MonoBehaviour
 		// Move the player back when it collides with the growing block
 		if (collision.name == "Player")
 		{
+			// If the block grows up then ignore the collision
 			if (_growsUp) {
 				return;
 			}
 
+			// Check if payer will be pushed out of bounds
 			if (!PlayerWillBePushedOutOfBounds ()) {
 				Vector3 closestPoint = collision.ClosestPointOnBounds(this.gameObject.transform.position);
 				closestPoint.y = collision.gameObject.transform.position.y;
@@ -82,6 +92,7 @@ public class ShapeChange : MonoBehaviour
 				Vector3 eulerAngles = transform.rotation.eulerAngles;
 				Vector3 newPosition = collision.gameObject.transform.position;
 
+				// Work out which direction to move the player in
 				if (Mathf.Approximately(eulerAngles.y, 0)) {
 					newPosition.z -= 1.5f;
 				} else if (Mathf.Approximately(eulerAngles.y, 90)) {
@@ -92,6 +103,7 @@ public class ShapeChange : MonoBehaviour
 					newPosition.x += 1.5f;
 				}
 
+				// Transform the player position
 				collision.gameObject.transform.position = newPosition;
 				return;
 
@@ -110,6 +122,10 @@ public class ShapeChange : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Handles logic for turning collision detected off
+	/// </summary>
+	/// <param name="collision">Collision.</param>
 	void OnTriggerExit(Collider collision)
 	{
 		if (collision.name == "Cube" || collision.name == "Player" && !PlayerWillBePushedOutOfBounds())
@@ -157,6 +173,7 @@ public class ShapeChange : MonoBehaviour
 		if (!Extrudable && !_isLinked || _collisionDetected)
 			return;
 
+		// Call grow on all linked shapes
 		if (_linkedShapes != null && _linkedShapes.Count > 0) {
 			for (int i = 0; i < _linkedShapes.Count; i++) {
 				if (_linkedShapes [i] != null) {
@@ -165,6 +182,7 @@ public class ShapeChange : MonoBehaviour
 			}
 		}
 			
+		// If the block grows down then stop it from crushing the player against the floor
 		if (_growsDown) {
 			GameObject person = GameObject.Find("Player");
 			double heightDifference = this.gameObject.transform.position.y - GetComponent<Collider> ().bounds.size.y - person.transform.position.y;
@@ -173,6 +191,7 @@ public class ShapeChange : MonoBehaviour
 			}
 		}
 
+		// If the block grows down then stop it from crushing the player against the roof
 		if (_growsUp) {
 			RaycastHit hit;
 			if(Physics.Raycast (GetComponent<Collider> ().bounds.center, Vector3.up, out hit)) {
@@ -200,6 +219,7 @@ public class ShapeChange : MonoBehaviour
 	/// </summary>
 	public void Shrink()
 	{
+		// Call Shrink() on all linked blocks
 		if (_linkedShapes != null && _linkedShapes.Count > 0) {
 			for (int i = 0; i < _linkedShapes.Count; i++) {
 				if (_linkedShapes [i] != null) {
@@ -220,12 +240,18 @@ public class ShapeChange : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Shrinks a block to its minimum size
+	/// </summary>
     public void ShrinkCompletely()
     {
         Shrink();
         _desiredScale = (int)MinSize;
     }
 
+	/// <summary>
+	/// Grows a block to is maximum size
+	/// </summary>
     public void GrowCompletely()
     {
         Grow();
@@ -233,11 +259,20 @@ public class ShapeChange : MonoBehaviour
         Debug.Log("Grow to : " + _desiredScale);
     }
 
+	/// <summary>
+	/// Sets the size of the desired scale.
+	/// </summary>
+	/// <param name="desiredScale">Desired scale.</param>
     public void SetDesiredSize(int desiredScale)
 	{
 		_desiredScale = desiredScale;
 	}
 
+	/// <summary>
+	/// Checks if player is standing on or is underneath a block
+	/// </summary>
+	/// <returns><c>true</c>, if in bounds of object was ised, <c>false</c> otherwise.</returns>
+	/// <param name="obj">Object.</param>
 	private bool isInBoundsOfObject (GameObject obj) {
 		double midZ = GetComponent<Collider> ().bounds.center.z;
 		double lowZ = midZ - GetComponent<Collider> ().bounds.size.z / 2;
@@ -253,6 +288,10 @@ public class ShapeChange : MonoBehaviour
 		return playerIsInXBounds && playerIsInZBounds;
 	}
 
+	/// <summary>
+	/// Checks if a player can be pushed back by a growing block without being pushed out of level bounds
+	/// </summary>
+	/// <returns><c>true</c>, if will be pushed out of bounds was playered, <c>false</c> otherwise.</returns>
 	private bool PlayerWillBePushedOutOfBounds () {
 		RaycastHit hit;
 		Vector3 direction = GetComponent<Collider> ().bounds.center;
@@ -262,6 +301,7 @@ public class ShapeChange : MonoBehaviour
 		Vector3 rayDirection = Vector3.one;
 		Vector3 origin = GetComponent<Collider> ().bounds.center;
 
+		// Work out which direction the block grows in 
 		if (Mathf.Approximately(eulerAngles.y, 0)) {
 			rayDirection = Vector3.back;
 			float z = (transform.position.z - GetComponent<Collider> ().bounds.center.z) * 2;
@@ -280,6 +320,7 @@ public class ShapeChange : MonoBehaviour
 			origin.x = transform.position.x - x;
 		}
 
+		// Check if there is an object in front of the growing block
 		if(Physics.Raycast (origin, rayDirection, out hit)) {
 			if (hit.distance <= 3) {
 				return true;
@@ -288,6 +329,10 @@ public class ShapeChange : MonoBehaviour
 		return false;
 	}
 
+	/// <summary>
+	/// Sets the whether the block is extrudable
+	/// </summary>
+	/// <param name="val">If set to <c>true</c> value.</param>
     public void setExtrudable(bool val)
     {
         Extrudable = val;

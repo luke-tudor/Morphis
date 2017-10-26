@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This class checks if pattern puzzles have been solved
+/// </summary>
 public class Pattern : MonoBehaviour {
 
     public GameObject[] toExtrude;
@@ -17,6 +20,10 @@ public class Pattern : MonoBehaviour {
         onExtrude();
     }
 
+	/// <summary>
+	/// Checks if the player has solved the puzzle
+	/// </summary>
+	/// <returns><c>true</c>, if if solved was checked, <c>false</c> otherwise.</returns>
     public bool checkIfSolved()
     {
         foreach (GameObject o in toExtrude)
@@ -38,6 +45,9 @@ public class Pattern : MonoBehaviour {
         return true;
     }
 
+	/// <summary>
+	/// Opens the door once the puzzle is solved
+	/// </summary>
     public void onExtrude()
     {
         if (!doorOpened && checkIfSolved())

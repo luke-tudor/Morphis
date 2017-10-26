@@ -2,6 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class handles spawning stars randomly from the various star spawner positions in each level
+/// </summary>
 public class StarSpawner : MonoBehaviour {
 	private GameObject[] spawners;
 	public int numberOfStars = 3;

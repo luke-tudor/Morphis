@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+/// <summary>
+/// This class controls the player's health system
+/// </summary>
 public class PlayerHealth : MonoBehaviour {
 
     public int startingHealth = 100;
@@ -39,6 +42,10 @@ public class PlayerHealth : MonoBehaviour {
         damaged = false;
 	}
 
+	/// <summary>
+	/// Inflicts damage upon the player
+	/// </summary>
+	/// <param name="amount">Amount.</param>
     public void TakeDamage (int amount)
     {
         damaged = true;
@@ -57,6 +64,9 @@ public class PlayerHealth : MonoBehaviour {
         }
     }
 
+	/// <summary>
+	/// Resets the level if the character dies
+	/// </summary>
     void Death()
     {
         isDead = true;

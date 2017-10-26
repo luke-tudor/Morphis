@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
+/// <summary>
+/// Class to store tags for affect blocks
+/// </summary>
 public static class Tags
 {
     public const String JUMP_BLOCK = "BounceSurface";

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Handles spawning of a star in a certain position
+/// </summary>
 public class StarSpawnPosition : MonoBehaviour {
 	public GameObject star;
 
