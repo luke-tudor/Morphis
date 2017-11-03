@@ -1,10 +1,11 @@
 # GameDesign
 
-To run prototype:
-Download and unzip release MorphisPrototype
-Run target/morphis.exe
+To run:  
+Download and unzip release morphis.zip  
+Run morphis/morphis.exe  
+Built for Windows 10 on x86-64 architecture  
 
-contributors: 
+Contributors: 
 
 	- Nathan Gavin
 	- Max Van Duin
